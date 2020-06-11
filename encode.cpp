@@ -1,6 +1,7 @@
 #include "encode.h"
 #include <unordered_map>
 #include <vector>
+#include <bitset>
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
@@ -59,12 +60,49 @@ void Encoder::generateTree(){
 
     recHelper(this->head, "");
 
-    for(unordered_map<char, string>::iterator it = this->bitmap.begin(); it != this->bitmap.end(); it++){
-        cout << it->first << " : " << it->second << endl;
-    }
+    //Print (char: bit string) pairs
+    // for(unordered_map<char, string>::iterator it = this->bitmap.begin(); it != this->bitmap.end(); it++){
+    //     cout << it->first << " : " << it->second << endl;
+    // }
 }
     
 void Encoder::encode(){
+    ifstream infile(this->inputFileName);
+    
+    if(!infile){
+        cerr << "Could not open input file: " << this->inputFileName << endl;
+        exit(1);
+    }
+
+    char c;
+    string encodedFile = "";
+    while(infile.get(c)){
+        encodedFile += this->bitmap[c];
+    }
+    infile.close();
+
+    ofstream outfile(this->outputFileName, ios::binary);
+    string firstByte;
+
+    //first 8 bits of file will be length of padding of last byte written to file
+    int difference = 8 - (encodedFile.length() % 8);
+    string binary = bitset<8>(difference).to_string(); 
+    unsigned long decimal = bitset<8>(binary).to_ulong();
+    outfile.write((const char*)&decimal, sizeof(unsigned long));
+
+    while(encodedFile.length() > 0){
+        if(encodedFile.length() >= 8){
+            firstByte = encodedFile.substr(0,8);
+            encodedFile = encodedFile.substr(8);
+        } else {
+            firstByte = encodedFile.substr(0, encodedFile.length());
+            encodedFile = "";
+        }
+        
+        bitset<8> bits(firstByte);
+        unsigned long binary_value = bits.to_ulong();
+        outfile.write((const char*)&binary_value, sizeof(unsigned long));
+    }
 
 }
 
