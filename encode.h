@@ -10,10 +10,12 @@ public:
     void encode();
 
 private:
+    void recHelper(Node* node, std::string built);
     std::string inputFileName;
     std::string outputFileName;
     Node* head;
     std::unordered_map<char, int> frequency;
+    std::unordered_map<char, std::string> bitmap;
     std::vector<Node*> list;
 };
 

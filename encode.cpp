@@ -8,6 +8,7 @@
 
 using namespace std;
 
+void recHelper(Node* node, string built);
 bool comp(const Node* n, const Node* n1){
         return n1->frequency < n->frequency;
 } 
@@ -55,11 +56,26 @@ void Encoder::generateTree(){
     }
     Node* root = this->list.back();
     this->head = root;
-    
 
-    
+    recHelper(this->head, "");
+
+    for(unordered_map<char, string>::iterator it = this->bitmap.begin(); it != this->bitmap.end(); it++){
+        cout << it->first << " : " << it->second << endl;
+    }
 }
     
 void Encoder::encode(){
 
+}
+
+void Encoder::recHelper(Node* node, string built){
+    if(node->left == nullptr && node->right == nullptr){
+        this->bitmap[node->character] = built;
+    }
+    if(node->left != nullptr){
+        recHelper(node->left, built+"0");
+    }
+    if(node->right != nullptr){
+        recHelper(node->right, built+"1");
+    }
 }
