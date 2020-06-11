@@ -8,6 +8,10 @@
 
 using namespace std;
 
+bool comp(const Node* n, const Node* n1){
+        return n1->frequency < n->frequency;
+} 
+
 Encoder::Encoder(string inputFile, string outputFile){
     this->inputFileName = inputFile;
     this->outputFileName = outputFile;
@@ -32,10 +36,26 @@ void Encoder::generateTree(){
     infile.close();
 
     for(unordered_map<char, int>::iterator it = this->frequency.begin(); it != this->frequency.end(); it++){
-        Node a(it->first, it->second);
-        this->list.push_back(a);
+        Node* temp = new Node(it->first, it->second);
+        this->list.push_back(temp);
     }
-    sort(this->list.begin(), this->list.end());
+    sort(this->list.begin(), this->list.end(), comp);
+
+    while(this->list.size() > 1){
+        Node* least1 = this->list.back();
+        this->list.pop_back();
+        Node* least2 = this->list.back();
+        this->list.pop_back();
+        Node* parent = new Node(least1->frequency + least2->frequency);
+        parent->left = least2;
+        parent->right = least1;
+        this->list.push_back(parent);
+
+        sort(this->list.begin(), this->list.end(), comp);
+    }
+    Node* root = this->list.back();
+    this->head = root;
+    
 
     
 }

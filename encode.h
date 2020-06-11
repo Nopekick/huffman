@@ -14,7 +14,7 @@ private:
     std::string outputFileName;
     Node* head;
     std::unordered_map<char, int> frequency;
-    std::vector<Node> list;
+    std::vector<Node*> list;
 };
 
 struct Node {
@@ -22,15 +22,17 @@ struct Node {
         left = nullptr;
         right = nullptr;
         character = ch;
-        freq = frequency;
+        frequency = freq;
+    }
+
+    Node(int freq){
+        left = nullptr;
+        right = nullptr;
+        frequency = freq;
     }
 
     char character;
     int frequency;
     Node* left;
     Node* right;  
-
-    bool operator<(const Node& n){
-        return this->frequency < n.frequency;
-    }  
 };
