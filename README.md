@@ -6,3 +6,5 @@ Nachenberg's slides: https://drive.google.com/drive/folders/1mINni4Vn-NQVrqT7tmV
 
 Compress file using character frequency tree (huffman tree). 
 Will have command line options for use
+
+TODO: calculate file size before and after compression/encoding
