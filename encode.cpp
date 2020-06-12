@@ -69,9 +69,9 @@ void Encoder::generateTree(){
     recHelper(this->head, "");
 
     //Print (char: bit string) pairs
-    // for(unordered_map<char, string>::iterator it = this->bitmap.begin(); it != this->bitmap.end(); it++){
-    //     cout << it->first << " : " << it->second << endl;
-    // }
+    for(unordered_map<char, string>::iterator it = this->bitmap.begin(); it != this->bitmap.end(); it++){
+        cout << it->first << " : " << it->second << endl;
+    }
 }
     
 void Encoder::encode(){

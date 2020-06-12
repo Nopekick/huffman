@@ -44,7 +44,7 @@ void Decoder::recoverTree(){
         infile.read((char*)&fr, sizeof(int));
         bitset<32> frbit(fr);
         frequency = frbit.to_ulong();
-        //cout << character << " : " << frequency << endl;
+        cout << character << " : " << frequency << endl;
         list.push_back(new Node(character, frequency));
     }
     
