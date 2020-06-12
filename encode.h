@@ -33,6 +33,11 @@ struct Node {
         frequency = freq;
     }
 
+    Node(){
+        left = nullptr;
+        right = nullptr;
+    }
+
     char character;
     int frequency;
     Node* left;

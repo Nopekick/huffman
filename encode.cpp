@@ -85,29 +85,43 @@ void Encoder::encode(){
     ofstream outfile(this->outputFileName, ios::binary);
     string firstByte;
 
-    //encode all leaf Node in Huffman tree
+    //first 8 bits (1 byte) of file will be number of encoded Node structs
+    //this means the input document can have at most 255 different characters
+    int numLeafs = this->list.size();
+    string bin = bitset<8>(numLeafs).to_string(); 
+    unsigned long dec = bitset<8>(bin).to_ulong();
+    outfile.write((const char*)&dec, 1);
 
-
-
-    //first 8 bits of file will be length of padding of last byte written to file
-    int difference = 8 - (encodedFile.length() % 8);
-    string binary = bitset<8>(difference).to_string(); 
-    unsigned long decimal = bitset<8>(binary).to_ulong();
-    outfile.write((const char*)&decimal, 1);
-    
-    while(encodedFile.length() > 0){
-        if(encodedFile.length() >= 8){
-            firstByte = encodedFile.substr(0,8);
-            encodedFile = encodedFile.substr(8);
-        } else {
-            firstByte = encodedFile.substr(0, encodedFile.length());
-            encodedFile = "";
-        }
-        
-        bitset<8> bits(firstByte);
-        unsigned long binary_value = bits.to_ulong();
-        outfile.write((const char*)&binary_value, 1);
+    //encoded char (character):int (frequency) pairs
+    for(vector<Node*>::iterator it = this->list.begin(); it != this->list.end(); it++){
+        Node temp = **it;
+        char c = temp.character;
+        int fr = temp.frequency;
+        bin = bitset<32>(fr).to_string(); 
+        dec = bitset<32>(bin).to_ulong();
+        outfile.write((char*)&c, sizeof(char));
+        outfile.write((char*)&dec, sizeof (int));
     }
+
+    //next 8 bits of file will be length of padding of last byte written to file
+    // int difference = 8 - (encodedFile.length() % 8);
+    // string binary = bitset<8>(difference).to_string(); 
+    // unsigned long decimal = bitset<8>(binary).to_ulong();
+    // outfile.write((const char*)&decimal, 1);
+    
+    // while(encodedFile.length() > 0){
+    //     if(encodedFile.length() >= 8){
+    //         firstByte = encodedFile.substr(0,8);
+    //         encodedFile = encodedFile.substr(8);
+    //     } else {
+    //         firstByte = encodedFile.substr(0, encodedFile.length());
+    //         encodedFile = "";
+    //     }
+        
+    //     bitset<8> bits(firstByte);
+    //     unsigned long binary_value = bits.to_ulong();
+    //     outfile.write((const char*)&binary_value, 1);
+    // }
     outfile.close();
 }
 

@@ -1,4 +1,5 @@
 #include "decode.h"
+#include "encode.h"
 #include <iostream>
 #include <fstream>
 #include <bitset>
@@ -11,7 +12,7 @@ Decoder::Decoder(string inputFile, string outputFile){
     this->outputFileName = outputFile;
 }
 
-void Decoder::recoverTree(){
+void Decoder::decode(){
     ifstream infile(this->inputFileName, ios::binary);
 
     if(!infile){
@@ -19,29 +20,42 @@ void Decoder::recoverTree(){
         exit(1);
     }
 
-    string encodedFile = "";
-    bitset<8> bts;
+    // string encodedFile = "";
+    // vector<char> fileContents((istreambuf_iterator<char>(infile)), istreambuf_iterator<char>());
     
-    // stringstream sstr;
-    // while(infile >> sstr.rdbuf());
-    // cout << sstr.str() << endl;
-    // char c;
-    // while (infile.get(c)){
-    //     for (int i = 7; i >= 0; i--) // or (int i = 0; i < 8; i++)  if you want reverse bit order in bytes
-    //         cout << ((c >> i) & 1);
-    // }
-    char a;
-    vector<char> fileContents((istreambuf_iterator<char>(infile)), istreambuf_iterator<char>());
-    for(vector<char>::iterator it = fileContents.begin(); it != fileContents.end(); it++){
-        a = *it;    
-        bitset<8> x(a);
-        encodedFile += x.to_string();
+    //retrieve number of nodes
+    int numNodes;
+    unsigned char b;
+    // bitset<8> num(fileContents.at(0));
+    // numNodes = num.to_ulong();
+    infile.read(reinterpret_cast<char *>(&b), 1);
+    bitset<8> z(b);
+    numNodes = z.to_ulong();
+
+    //retrieve nodes from infile
+    unsigned char ch;
+    unsigned char fr;
+    int frequency;
+    char character;
+    Node* arr = new Node[numNodes];
+    for(int i = 0; i < numNodes; i++){
+        infile.read((char*)&ch, sizeof(char));
+        infile.read((char*)&fr, sizeof (int));
+        bitset<8> chbit(ch);
+        bitset<32> frbit(fr);
+        frequency = frbit.to_ulong();
+        // character = chbit.to_string();
+        cout << chbit.to_string() << " : " << frequency << endl;
     }
-    cout << encodedFile << endl;
-
-
-}
     
-void Decoder::decode(){
+    
+    // char a;
+    // for(vector<char>::iterator it = fileContents.begin() + 1; it != fileContents.end(); it++){
+    //     a = *it;    
+    //     bitset<8> x(a);
+    //     encodedFile += x.to_string();
+    // }
+    //cout << encodedFile << endl;
 
+    infile.close();
 }
