@@ -42,10 +42,11 @@ void Encoder::generateTree(){
     sort(this->list.begin(), this->list.end(), comp);
     vector<Node*> tempList(this->list);
 
+    Node* least1, *least2;
     while(tempList.size() > 1){
-        Node* least1 = tempList.back();
+        least1 = tempList.back();
         tempList.pop_back();
-        Node* least2 = tempList.back();
+        least2 = tempList.back();
         tempList.pop_back();
         Node* parent = new Node(least1->frequency + least2->frequency);
         parent->left = least2;

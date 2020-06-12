@@ -13,7 +13,7 @@ Decoder::Decoder(string inputFile, string outputFile){
     this->outputFileName = outputFile;
 }
 
-void Decoder::decode(){
+void Decoder::recoverTree(){
     ifstream infile(this->inputFileName, ios::binary);
 
     if(!infile){
@@ -44,16 +44,17 @@ void Decoder::decode(){
         infile.read((char*)&fr, sizeof(int));
         bitset<32> frbit(fr);
         frequency = frbit.to_ulong();
-        cout << character << " : " << frequency << endl;
+        //cout << character << " : " << frequency << endl;
         list.push_back(new Node(character, frequency));
     }
     
     sort(list.begin(), list.end(), comp);
 
+    Node* least1, *least2;
     while(list.size() > 1){
-        Node* least1 = list.back();
+        least1 = list.back();
         list.pop_back();
-        Node* least2 = list.back();
+        least2 = list.back();
         list.pop_back();
         Node* parent = new Node(least1->frequency + least2->frequency);
         parent->left = least2;
@@ -65,5 +66,52 @@ void Decoder::decode(){
     Node* root = list.back();
     this->head = root;
 
+    //get padding length
+    int padding; 
+    char pad;
+    infile.read((char*)&pad, sizeof(char));
+    bitset<8> padd(pad); 
+    padding = padd.to_ulong();
+
+    //build binary string of compressed file contents
+    string file = "";
+    char byte;
+    while(infile){
+        infile.read((char*)&byte, sizeof(char));
+        bitset<8> reader(byte);
+        file += reader.to_string();
+    }
+    this->content = file;
     infile.close();
+}
+
+void Decoder::decode(){
+    string buildOutput;
+
+    int pos = 0;
+    Node* temp = this->head;
+    while(pos < this->content.length()){
+        if((this->content)[pos] == '0'){
+            if(temp->left != nullptr){
+                temp = temp->left;
+                if(temp->left == nullptr && temp->right == nullptr){
+                    buildOutput += temp->character;
+                    temp = this->head;
+                }
+            }
+        } else if((this->content)[pos] == '1'){
+            if(temp->right != nullptr){
+                temp = temp->right;
+                if(temp->left == nullptr && temp->right == nullptr){
+                    buildOutput += temp->character;
+                    temp = this->head;
+                }
+            }
+        }
+        pos++;
+    }
+
+    ofstream outfile(this->outputFileName);
+    outfile << buildOutput;
+    outfile.close();
 }

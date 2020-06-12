@@ -26,7 +26,7 @@ struct Node {
     Node* right;  
 };
 
-bool comp(const Node* n, const Node* n1){
+static bool comp(const Node* n, const Node* n1){
         return n1->frequency < n->frequency;
 }
 

@@ -21,6 +21,7 @@ int main(int argc, char* argv[])
         e.encode();
     } else if(strcmp(argv[1],"-d") == 0){
         Decoder dc(inputFile, outputFile);
+        dc.recoverTree();
         dc.decode();
     } else {
         printUsage();
