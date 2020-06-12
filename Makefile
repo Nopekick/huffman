@@ -16,3 +16,10 @@ encode.o: encode.cpp encode.h node.h
 
 clean:
 	rm -f main decode.o encode.o main.o
+
+clear:
+	rm -f test/output1 test/output2 test/decode1 test/decode2
+
+tests:
+	./main -e test/input1 test/output1	
+	./main -d test/output1 test/decode1

@@ -1,5 +1,7 @@
 # Huffman Decoder
 
+## Important: this program is still a bit buggy on larger files
+
 ## Descriptions of Huffman Encoding
 
 Wikipedia: https://en.wikipedia.org/wiki/Huffman_coding
@@ -17,6 +19,7 @@ or
 g++ main.cpp encode.cpp decode.cpp -o main
 ```
 
+
 To encode:
 ```bash
 ./main -e input-file output-file
@@ -27,7 +30,8 @@ To decode:
 ./main -d input-file output-file
 ```
 
-To remove .o files from 'make':
+
+To remove .o files generated from 'make':
 ```bash
 make clean
 ```
@@ -44,5 +48,5 @@ larger text files.
 
 TODO: optimize tree building with priority queue
 
-TODO: optimize compression of huffman tree
+TODO: better encoding of huffman tree
 

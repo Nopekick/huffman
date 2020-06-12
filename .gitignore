@@ -1,4 +1,6 @@
-test/
+test/*
+!test/input1
+!test/input2
 main
 main.o
 encode.o
