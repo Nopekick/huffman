@@ -29,10 +29,14 @@ for decoding will cause undefined behavior. Also, output files should
 be empty or nonexistent files.
 
 
-## Possible TODOS
+## Possible TODOS:
+
+TODO: fix padding issue on decode
 
 TODO: calculate file size before and after compression/encoding
 
 TODO: optimize tree building with priority queue
 
 TODO: wipe output files to be careful
+
+TODO: check for empty input files
