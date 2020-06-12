@@ -8,3 +8,4 @@ Compress file using character frequency tree (huffman tree).
 Will have command line options for use
 
 TODO: calculate file size before and after compression/encoding
+TODO: optimize tree building with priority queue

@@ -1,3 +1,6 @@
+#ifndef ENCODE_H
+#define ENCODE_H
+
 #include <string>
 #include <unordered_map>
 #include <vector> 
@@ -19,27 +22,4 @@ private:
     std::vector<Node*> list;
 };
 
-struct Node {
-    Node(char ch, int freq){
-        left = nullptr;
-        right = nullptr;
-        character = ch;
-        frequency = freq;
-    }
-
-    Node(int freq){
-        left = nullptr;
-        right = nullptr;
-        frequency = freq;
-    }
-
-    Node(){
-        left = nullptr;
-        right = nullptr;
-    }
-
-    char character;
-    int frequency;
-    Node* left;
-    Node* right;  
-};
+#endif

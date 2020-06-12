@@ -1,4 +1,5 @@
 #include "encode.h"
+#include "node.h"
 #include <unordered_map>
 #include <vector>
 #include <bitset>
@@ -9,10 +10,7 @@
 
 using namespace std;
 
-void recHelper(Node* node, string built);
-bool comp(const Node* n, const Node* n1){
-        return n1->frequency < n->frequency;
-} 
+void recHelper(Node* node, string built); 
 
 Encoder::Encoder(string inputFile, string outputFile){
     this->inputFileName = inputFile;
@@ -104,24 +102,26 @@ void Encoder::encode(){
     }
 
     //next 8 bits of file will be length of padding of last byte written to file
-    // int difference = 8 - (encodedFile.length() % 8);
-    // string binary = bitset<8>(difference).to_string(); 
-    // unsigned long decimal = bitset<8>(binary).to_ulong();
-    // outfile.write((const char*)&decimal, 1);
+    int difference = 8 - (encodedFile.length() % 8);
+    string binary = bitset<8>(difference).to_string(); 
+    unsigned long decimal = bitset<8>(binary).to_ulong();
+    outfile.write((const char*)&decimal, 1);
     
-    // while(encodedFile.length() > 0){
-    //     if(encodedFile.length() >= 8){
-    //         firstByte = encodedFile.substr(0,8);
-    //         encodedFile = encodedFile.substr(8);
-    //     } else {
-    //         firstByte = encodedFile.substr(0, encodedFile.length());
-    //         encodedFile = "";
-    //     }
+    //write file contents to binary file, 8 bits (1 byte) at a time
+    while(encodedFile.length() > 0){
+        if(encodedFile.length() >= 8){
+            firstByte = encodedFile.substr(0,8);
+            encodedFile = encodedFile.substr(8);
+        } else {
+            firstByte = encodedFile.substr(0, encodedFile.length());
+            encodedFile = "";
+        }
         
-    //     bitset<8> bits(firstByte);
-    //     unsigned long binary_value = bits.to_ulong();
-    //     outfile.write((const char*)&binary_value, 1);
-    // }
+        bitset<8> bits(firstByte);
+        unsigned long binary_value = bits.to_ulong();
+        outfile.write((const char*)&binary_value, 1);
+    }
+
     outfile.close();
 }
 

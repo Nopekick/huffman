@@ -1,3 +1,6 @@
+#ifndef DECODE_H
+#define DECODE_H
+
 #include <string>
 #include <unordered_map>
 
@@ -13,3 +16,5 @@ private:
     std::string outputFileName;
     Node* head;
 };
+
+#endif

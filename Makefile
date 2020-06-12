@@ -8,10 +8,10 @@ main: main.o decode.o encode.o
 main.o: decode.h encode.h main.cpp	
 	$(CC) -c main.cpp
 
-decode.o: decode.cpp decode.h
+decode.o: decode.cpp decode.h node.h
 	$(CC) -c decode.cpp	
 
-encode.o: encode.cpp encode.h
+encode.o: encode.cpp encode.h node.h
 	$(CC) -c encode.cpp	
 
 clean:

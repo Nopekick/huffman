@@ -1,11 +1,11 @@
 #include "decode.h"
-#include "encode.h"
+#include "node.h"
 #include <iostream>
 #include <fstream>
 #include <bitset>
-#include <sstream>
 #include <stdio.h>
 #include <vector>
+#include <algorithm> 
 using namespace std;
 
 Decoder::Decoder(string inputFile, string outputFile){
@@ -21,12 +21,6 @@ void Decoder::decode(){
         exit(1);
     }
 
-    // string encodedFile = "";
-    // vector<char> fileContents((istreambuf_iterator<char>(infile)), istreambuf_iterator<char>());
-    // bitset<8> x(fileContents.at(6));
-    // cout << static_cast<unsigned char>(x.to_ulong()) << endl;
-    // infile.seekg(0);
-
     //retrieve number of nodes
     int numNodes;
     unsigned char first;
@@ -39,7 +33,8 @@ void Decoder::decode(){
     unsigned char ch, fr;
     int frequency;
     char character;
-    Node* arr = new Node[numNodes];
+    vector<Node*> list;
+    list.reserve(numNodes);
     for(int i = 0; i < numNodes; i++){
         infile.read((char*)&ch, sizeof(char));
         bitset<8> chbit(ch);
@@ -49,21 +44,26 @@ void Decoder::decode(){
         infile.read((char*)&fr, sizeof(int));
         bitset<32> frbit(fr);
         frequency = frbit.to_ulong();
-        
-        
         cout << character << " : " << frequency << endl;
-        //cout << character << " : " << temp << " : " << ch << " : " << chbit.to_string() << endl;
-        // cout << frbit.to_string() << endl;
+        list.push_back(new Node(character, frequency));
     }
     
-    
-    // char a;
-    // for(vector<char>::iterator it = fileContents.begin() + 1; it != fileContents.end(); it++){
-    //     a = *it;    
-    //     bitset<8> x(a);
-    //     encodedFile += x.to_string();
-    // }
-    //cout << encodedFile << endl;
+    sort(list.begin(), list.end(), comp);
+
+    while(list.size() > 1){
+        Node* least1 = list.back();
+        list.pop_back();
+        Node* least2 = list.back();
+        list.pop_back();
+        Node* parent = new Node(least1->frequency + least2->frequency);
+        parent->left = least2;
+        parent->right = least1;
+        list.push_back(parent);
+
+        sort(list.begin(), list.end(), comp);
+    }
+    Node* root = list.back();
+    this->head = root;
 
     infile.close();
 }
