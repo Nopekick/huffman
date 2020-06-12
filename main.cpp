@@ -40,7 +40,7 @@ void printUsage(){
 }
 
 void printFileSize(string in, string out){
-     int compSize;
+    int compSize;
     int normSize; 
     ifstream infile(in, ios::binary);
     infile.seekg(0, ios::end);

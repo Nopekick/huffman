@@ -138,6 +138,8 @@ void Encoder::encode(){
     }
 
     outfile.close();
+
+    freeHelper(this->head);
 }
 
 void Encoder::recHelper(Node* node, string built){
@@ -150,4 +152,13 @@ void Encoder::recHelper(Node* node, string built){
     if(node->right != nullptr){
         recHelper(node->right, built+"1");
     }
+}
+
+void Encoder::freeHelper(Node* temp){
+    if(temp->left != nullptr)
+        freeHelper(temp->left);
+    if(temp->right != nullptr)
+        freeHelper(temp->right);
+    
+    delete temp;
 }

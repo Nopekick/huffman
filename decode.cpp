@@ -119,4 +119,15 @@ void Decoder::decode(){
     ofstream outfile(this->outputFileName);
     outfile << buildOutput;
     outfile.close();
+
+    freeHelper(this->head);
+}
+
+void Decoder::freeHelper(Node* temp){
+    if(temp->left != nullptr)
+        freeHelper(temp->left);
+    if(temp->right != nullptr)
+        freeHelper(temp->right);
+    
+    delete temp;
 }

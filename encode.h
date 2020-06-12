@@ -11,6 +11,7 @@ public:
     Encoder(std::string inputFile, std::string outputfile);
     void generateTree();
     void encode();
+    void freeHelper(Node* temp);
 
 private:
     void recHelper(Node* node, std::string built);

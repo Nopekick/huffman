@@ -11,6 +11,7 @@ public:
     Decoder(std::string inputFile, std::string outputFile);
     void recoverTree();
     void decode();
+    void freeHelper(Node* temp);
 
 private:
     std::string inputFileName;
