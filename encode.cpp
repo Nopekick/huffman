@@ -42,20 +42,21 @@ void Encoder::generateTree(){
         this->list.push_back(temp);
     }
     sort(this->list.begin(), this->list.end(), comp);
+    vector<Node*> tempList(this->list);
 
-    while(this->list.size() > 1){
-        Node* least1 = this->list.back();
-        this->list.pop_back();
-        Node* least2 = this->list.back();
-        this->list.pop_back();
+    while(tempList.size() > 1){
+        Node* least1 = tempList.back();
+        tempList.pop_back();
+        Node* least2 = tempList.back();
+        tempList.pop_back();
         Node* parent = new Node(least1->frequency + least2->frequency);
         parent->left = least2;
         parent->right = least1;
-        this->list.push_back(parent);
+        tempList.push_back(parent);
 
-        sort(this->list.begin(), this->list.end(), comp);
+        sort(tempList.begin(), tempList.end(), comp);
     }
-    Node* root = this->list.back();
+    Node* root = tempList.back();
     this->head = root;
 
     recHelper(this->head, "");
@@ -84,12 +85,16 @@ void Encoder::encode(){
     ofstream outfile(this->outputFileName, ios::binary);
     string firstByte;
 
+    //encode all leaf Node in Huffman tree
+
+
+
     //first 8 bits of file will be length of padding of last byte written to file
     int difference = 8 - (encodedFile.length() % 8);
     string binary = bitset<8>(difference).to_string(); 
     unsigned long decimal = bitset<8>(binary).to_ulong();
-    outfile.write((const char*)&decimal, sizeof(unsigned long));
-
+    outfile.write((const char*)&decimal, 1);
+    
     while(encodedFile.length() > 0){
         if(encodedFile.length() >= 8){
             firstByte = encodedFile.substr(0,8);
@@ -101,9 +106,9 @@ void Encoder::encode(){
         
         bitset<8> bits(firstByte);
         unsigned long binary_value = bits.to_ulong();
-        outfile.write((const char*)&binary_value, sizeof(unsigned long));
+        outfile.write((const char*)&binary_value, 1);
     }
-
+    outfile.close();
 }
 
 void Encoder::recHelper(Node* node, string built){
