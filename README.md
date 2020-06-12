@@ -12,6 +12,10 @@ First run this to generate executable
 ```bash
 make
 ```
+or
+```bash
+g++ main.cpp encode.cpp decode.cpp -o main
+```
 
 To encode:
 ```bash
@@ -23,20 +27,22 @@ To decode:
 ./main -d input-file output-file
 ```
 
-Note: this program currently assumes that the input file for decoding
-was encoded by the same program. Using a random file as the input file
-for decoding will cause undefined behavior. Also, output files should
-be empty or nonexistent files.
+To remove .o files from 'make':
+```bash
+make clean
+```
 
+This program currently assumes that the input file for decoding
+was encoded by the same program. Using a random file as the input file
+for decoding will cause undefined behavior.
+
+Additionally, for small input files, the resulting compressed output 
+file may be larger. The compression is more effective on 
+larger text files. 
 
 ## Possible TODOS:
 
-TODO: fix padding issue on decode
-
-TODO: calculate file size before and after compression/encoding
-
 TODO: optimize tree building with priority queue
 
-TODO: wipe output files to be careful
+TODO: optimize compression of huffman tree
 
-TODO: check for empty input files

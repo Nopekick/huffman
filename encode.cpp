@@ -25,6 +25,14 @@ void Encoder::generateTree(){
         exit(1);
     }
 
+    //check if input file is empty
+    infile.seekg(0, ios::end);
+    if(infile.tellg() == 0){
+        cerr << "Input file is empty. No need to compress anything" << endl;
+        exit(1);
+    }
+    infile.seekg(0);
+
     char c;
     while(infile.get(c)){
         if(this->frequency.find(c) == this->frequency.end()){
@@ -74,6 +82,7 @@ void Encoder::encode(){
         exit(1);
     }
 
+    //get bit string of input file from bitmap
     char c;
     string encodedFile = "";
     while(infile.get(c)){
@@ -81,10 +90,15 @@ void Encoder::encode(){
     }
     infile.close();
 
+    //clear output file first
+    ofstream ofs;
+    ofs.open(this->outputFileName, ofstream::out | ofstream::trunc);
+    ofs.close();
+
     ofstream outfile(this->outputFileName, ios::binary);
     string firstByte;
 
-    //first 8 bits (1 byte) of file will be number of encoded Node structs
+    //first 8 bits (1 byte) of file will be number of encoded data pairs
     //this means the input document can have at most 255 different characters
     int numLeafs = this->list.size();
     string bin = bitset<8>(numLeafs).to_string(); 

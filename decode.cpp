@@ -67,11 +67,10 @@ void Decoder::recoverTree(){
     this->head = root;
 
     //get padding length
-    int padding; 
     char pad;
     infile.read((char*)&pad, sizeof(char));
     bitset<8> padd(pad); 
-    padding = padd.to_ulong();
+    this->padding = padd.to_ulong();
 
     //build binary string of compressed file contents
     string file = "";
@@ -86,12 +85,18 @@ void Decoder::recoverTree(){
 }
 
 void Decoder::decode(){
-    string buildOutput;
+    string buildOutput, content;
+
+
+    string lastByte = this->content.substr(this->content.length()-8);
+    lastByte = lastByte.substr(this->padding);
+    content = this->content.substr(0, this->content.length()-8) + lastByte;
+
 
     int pos = 0;
     Node* temp = this->head;
-    while(pos < this->content.length()){
-        if((this->content)[pos] == '0'){
+    while(pos < content.length()){
+        if(content[pos] == '0'){
             if(temp->left != nullptr){
                 temp = temp->left;
                 if(temp->left == nullptr && temp->right == nullptr){
@@ -99,7 +104,7 @@ void Decoder::decode(){
                     temp = this->head;
                 }
             }
-        } else if((this->content)[pos] == '1'){
+        } else if(content[pos] == '1'){
             if(temp->right != nullptr){
                 temp = temp->right;
                 if(temp->left == nullptr && temp->right == nullptr){

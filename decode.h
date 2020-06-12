@@ -17,6 +17,7 @@ private:
     std::string outputFileName;
     Node* head;
     std::string content;
+    int padding;
 };
 
 #endif
