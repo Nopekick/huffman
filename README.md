@@ -1,6 +1,6 @@
 # Huffman Decoder
 
-## Important: this program is still a bit buggy on larger files
+## Important: this program is still a bit buggy on larger files, currently being fixed
 
 ## Descriptions of Huffman Encoding
 
@@ -34,6 +34,19 @@ To decode:
 To remove .o files generated from 'make':
 ```bash
 make clean
+```
+
+
+## Tests 
+To automatically run the program in the given files
+```bash
+make tests
+```
+```bash
+make test-1
+```
+```bash
+make test-2
 ```
 
 This program currently assumes that the input file for decoding
