@@ -95,11 +95,11 @@ void Encoder::encode(){
     //encoded char (character):int (frequency) pairs
     for(vector<Node*>::iterator it = this->list.begin(); it != this->list.end(); it++){
         Node temp = **it;
-        char c = temp.character;
+        char c[] = {temp.character};
         int fr = temp.frequency;
         bin = bitset<32>(fr).to_string(); 
         dec = bitset<32>(bin).to_ulong();
-        outfile.write((char*)&c, sizeof(char));
+        outfile.write((char*)&c[0], sizeof(char));
         outfile.write((char*)&dec, sizeof (int));
     }
 
