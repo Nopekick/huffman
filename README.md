@@ -6,7 +6,7 @@
 
 Wikipedia: https://en.wikipedia.org/wiki/Huffman_coding
 
-Nachenberg's slides: https://drive.google.com/drive/folders/1mINni4Vn-NQVrqT7tmVwswmm46MB34TS
+Nachenberg's slides: https://drive.google.com/file/d/1z2lC4vjmO98x4LbYCfHSmc2N5tnSz6YT/view?usp=sharing
 
 ## Usage
 
