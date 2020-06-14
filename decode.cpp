@@ -30,7 +30,8 @@ void Decoder::recoverTree(){
 
     
     //retrieve nodes from infile
-    unsigned char ch, fr;
+    unsigned char ch;
+    unsigned int fr;
     int frequency;
     char character;
     vector<Node*> list;
@@ -44,7 +45,7 @@ void Decoder::recoverTree(){
         infile.read((char*)&fr, sizeof(int));
         bitset<32> frbit(fr);
         frequency = frbit.to_ulong();
-        //cout << character << " : " << frequency << endl;
+        //cout << character << " : " << frequency << " : " << frbit.to_string() << endl;
         list.push_back(new Node(character, frequency));
     }
     
