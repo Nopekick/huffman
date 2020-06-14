@@ -44,7 +44,7 @@ void Decoder::recoverTree(){
         infile.read((char*)&fr, sizeof(int));
         bitset<32> frbit(fr);
         frequency = frbit.to_ulong();
-        cout << character << " : " << frequency << endl;
+        //cout << character << " : " << frequency << endl;
         list.push_back(new Node(character, frequency));
     }
     
@@ -75,8 +75,7 @@ void Decoder::recoverTree(){
     //build binary string of compressed file contents
     string file = "";
     char byte;
-    while(infile){
-        infile.read((char*)&byte, sizeof(char));
+    while(infile.read((char*)&byte, sizeof(char))){
         bitset<8> reader(byte);
         file += reader.to_string();
     }
@@ -87,12 +86,11 @@ void Decoder::recoverTree(){
 void Decoder::decode(){
     string buildOutput, content;
 
-
+    //substract padding from beginning of last byte of binary file content
     string lastByte = this->content.substr(this->content.length()-8);
     lastByte = lastByte.substr(this->padding);
     content = this->content.substr(0, this->content.length()-8) + lastByte;
-
-
+    
     int pos = 0;
     Node* temp = this->head;
     while(pos < content.length()){
