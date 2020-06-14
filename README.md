@@ -1,7 +1,5 @@
 # Huffman Decoder
 
-## Important: this program is still a bit buggy on larger files, currently being fixed
-
 ## Descriptions of Huffman Encoding
 
 Wikipedia: https://en.wikipedia.org/wiki/Huffman_coding
